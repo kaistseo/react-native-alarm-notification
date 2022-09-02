@@ -83,7 +83,7 @@ public class ANModule extends ReactContextBaseJavaModule {
         alarm.setColor(bundle.getString("color", "red"));
 
         Bundle data = bundle.getBundle("data");
-        alarm.setData(bundle2string(data));
+        alarm.setData(bundleToString(data));
 
         alarm.setInterval(bundle.getString("repeat_interval", "hourly"));
         alarm.setLargeIcon(bundle.getString("large_icon", ""));
@@ -167,7 +167,7 @@ public class ANModule extends ReactContextBaseJavaModule {
         alarm.setColor(bundle.getString("color", "red"));
 
         Bundle data = bundle.getBundle("data");
-        alarm.setData(bundle2string(data));
+        alarm.setData(bundleToString(data));
 
         alarm.setLargeIcon(bundle.getString("large_icon"));
         alarm.setLoopSound(bundle.getBoolean("loop_sound", false));
@@ -223,14 +223,15 @@ public class ANModule extends ReactContextBaseJavaModule {
         promise.resolve(array);
     }
 
-    private static String bundle2string(Bundle bundle) {
-        if (bundle == null) {
-            return null;
-        }
-        StringBuilder string = new StringBuilder();
+    private static String bundleToString(Bundle bundle) {
+        JSONObject json = new JSONObject();
         for (String key : bundle.keySet()) {
-            string.append(key).append("==>").append(bundle.get(key)).append(";;");
+            try {
+                json.put(key, JSONObject.wrap(bundle.get(key)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        return string.toString();
+        return json.toString();
     }
 }
