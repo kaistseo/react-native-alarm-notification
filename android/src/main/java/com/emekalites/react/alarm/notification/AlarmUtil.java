@@ -15,6 +15,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -145,7 +146,7 @@ class AlarmUtil {
 
         if (scheduleType.equals("once")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
+                alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), alarmIntent), alarmIntent);
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
             } else {
@@ -340,8 +341,10 @@ class AlarmUtil {
                 return;
             }
 
+            AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+
             boolean playSound = alarm.isPlaySound();
-            if (playSound) {
+            if (playSound && am.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
                 this.playAlarmSound(alarm.getSoundName(), alarm.getSoundNames(), alarm.isLoopSound(), alarm.getVolume());
             }
 
@@ -416,14 +419,14 @@ class AlarmUtil {
                     mChannel.setLightColor(Color.parseColor(color));
                 }
 
-                if(!mChannel.canBypassDnd()){
+                if (!mChannel.canBypassDnd()) {
                     mChannel.setBypassDnd(alarm.isBypassDnd());
                 }
 
                 mChannel.setVibrationPattern(null);
 
                 // play vibration
-                if (alarm.isVibrate()) {
+                if (alarm.isVibrate() && am.getRingerMode() != AudioManager.RINGER_MODE_SILENT) {
                     Vibrator vibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
                     if (vibrator.hasVibrator()) {
                         vibrator.vibrate(VibrationEffect.createWaveform(vibrationPattern, 0));
@@ -452,15 +455,17 @@ class AlarmUtil {
                 dismissIntent.setAction(NOTIFICATION_ACTION_DISMISS);
                 dismissIntent.putExtra("AlarmId", alarm.getId());
                 PendingIntent pendingDismiss = PendingIntent.getBroadcast(mContext, notificationID, dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                NotificationCompat.Action dismissAction = new NotificationCompat.Action(android.R.drawable.ic_lock_idle_alarm, "DISMISS", pendingDismiss);
+                NotificationCompat.Action dismissAction = new NotificationCompat.Action(android.R.drawable.ic_lock_idle_alarm, mContext.getString(R.string.dismiss), pendingDismiss);
                 mBuilder.addAction(dismissAction);
 
+                /*
                 Intent snoozeIntent = new Intent(mContext, AlarmReceiver.class);
                 snoozeIntent.setAction(NOTIFICATION_ACTION_SNOOZE);
                 snoozeIntent.putExtra("SnoozeAlarmId", alarm.getId());
                 PendingIntent pendingSnooze = PendingIntent.getBroadcast(mContext, notificationID, snoozeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 NotificationCompat.Action snoozeAction = new NotificationCompat.Action(R.drawable.ic_snooze, "SNOOZE", pendingSnooze);
                 mBuilder.addAction(snoozeAction);
+                */
             }
 
             //use big text
