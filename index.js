@@ -19,6 +19,10 @@ const parseDateString = (string) => {
 	return new Date(year, month - 1, day, hours, minutes, seconds);
 };
 
+ReactNativeAN.getInitialNotification = async () => {
+	return await RNAlarmNotification.getInitialNotification();
+};
+
 ReactNativeAN.scheduleAlarm = async (details) => {
 	if (!details.fire_date || (details.fire_date && details.fire_date === '')) {
 		throw new Error('failed to schedule alarm because fire date is missing');
