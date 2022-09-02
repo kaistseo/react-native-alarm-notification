@@ -223,6 +223,16 @@ public class ANModule extends ReactContextBaseJavaModule {
         promise.resolve(array);
     }
 
+    @ReactMethod
+    public void addListener(String eventName) {
+        // Keep: Required for RN built in Event Emitter Calls.
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+        // Keep: Required for RN built in Event Emitter Calls.
+    }
+
     private static String bundleToString(Bundle bundle) {
         JSONObject json = new JSONObject();
         for (String key : bundle.keySet()) {
