@@ -1,8 +1,8 @@
 {
-  "name": "react-native-alarm-notification",
+  "name": "@kaistseo/react-native-alarm-notification",
   "title": "React Native Alarm Notification",
-  "version": "1.8.0",
-  "description": "schedule alarm with notification in react-native",
+  "version": "1.0.0",
+  "description": "schedule alarm with notification in react-native (forked from emekalites/react-native-alarm-notification)",
   "main": "index.js",
   "files": [
     "README.md",
@@ -16,8 +16,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/emekalites/react-native-alarm-notification.git",
-    "baseUrl": "https://github.com/emekalites/react-native-alarm-notification"
+    "url": "git+https://github.com/kaistseo/react-native-alarm-notification.git",
+    "baseUrl": "https://github.com/kaistseo/react-native-alarm-notification"
   },
   "keywords": [
     "react-native",
@@ -25,10 +25,7 @@
     "notification",
     "alarm notification"
   ],
-  "author": {
-    "name": "Chukwuemeka Ihedoro",
-    "email": "caihedoro@gmail.com"
-  },
+  "author": "Seong-ryeol Seo <kaistseo@gmail.com>",
   "license": "MIT",
   "licenseFilename": "LICENSE",
   "readmeFilename": "README.md",
