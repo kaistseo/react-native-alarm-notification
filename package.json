@@ -1,7 +1,7 @@
 {
   "name": "@kaistseo/react-native-alarm-notification",
   "title": "React Native Alarm Notification",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "schedule alarm with notification in react-native (forked from emekalites/react-native-alarm-notification)",
   "main": "index.js",
   "files": [
